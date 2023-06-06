@@ -2,4 +2,9 @@
 <resources>
 
     <style name="Theme.Challenge" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.YourApp.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logochat</item>
+        <item name="windowSplashScreenBackground">#ffffff</item>
+    </style>
 </resources>

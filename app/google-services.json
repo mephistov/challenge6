@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1048919254328",
+    "project_id": "challengglobant",
+    "storage_bucket": "challengglobant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048919254328:android:2915b433ea6e5601f34dcd",
+        "android_client_info": {
+          "package_name": "com.nicolascastilla.challenge6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048919254328-jqdub2a56d73v8so8n7dfvbol8c3f2ot.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4roaNnjTuT0GxbEr7o_DpX4K_y2TAn68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048919254328-jqdub2a56d73v8so8n7dfvbol8c3f2ot.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
