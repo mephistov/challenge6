@@ -52,7 +52,7 @@ class UserDataViewModel @Inject constructor(
             name = "",
             emai = email.value,
             password = password.value,
-            phone=phone.value,
+            phone= phone.value,
             uid = ""
         )
         isLoading.value = true
@@ -62,16 +62,7 @@ class UserDataViewModel @Inject constructor(
                 if(it != null){
                     isRegisterUser.value = true
                     isValidated.postValue(true)
-                }/*else{
-                    val tempUseD = userUseCase.createuser(userData)
-                    tempUseD.collect{createData->
-                        if(createData != null){
-                            isRegisterUser.value = true
-                        }
-                    }
-
-
-                }*/
+                }
 
             }
             isLoading.value = false

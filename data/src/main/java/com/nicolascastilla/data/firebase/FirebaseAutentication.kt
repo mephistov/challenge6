@@ -10,10 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 
 class FirebaseAutentication @Inject constructor(
@@ -29,21 +27,24 @@ class FirebaseAutentication @Inject constructor(
         aut.signInWithEmailAndPassword(user.emai,user.password)
                 .addOnCompleteListener { task ->
                     if(task.isSuccessful){
-                        val userF = aut.currentUser
-                        //TODO get user from firebase uid ref
-                        val userData = UserData(
+                       //val userF = aut.currentUser
+
+                       /* val userData = UserData(
                             systemId = "",
                             name = "",
                             emai = user.emai,
                             password = user.password,
                             phone= user.phone,
                             uid = task.result.user?.uid!!
-                        )
+                        )*/
                         CoroutineScope(Dispatchers.IO).launch {
-                            shareData.setUser(userData)
+                            val userFB = getUserLoggedFirebase(task.result.user?.uid!!)
+                            val userDataFromFB = userFB.first()
+                            shareData.setUser(userDataFromFB!!)
+                            trySend(userDataFromFB).isSuccess
                         }
 
-                        trySend(userData).isSuccess
+
                     }
                     else {
                         trySend(null).isSuccess
@@ -61,8 +62,8 @@ class FirebaseAutentication @Inject constructor(
         aut.createUserWithEmailAndPassword(user.emai,user.password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful){
-                    val myRef = firebaseDatabase.child("users").child(user.phone)//task.result.user?.uid!!
                     user.uid = task.result.user?.uid!!
+                    val myRef = firebaseDatabase.child("users").child(user.uid)//task.result.user?.uid!!
                     myRef.setValue(user)
                     CoroutineScope(Dispatchers.IO).launch {
                         shareData.setUser(user)
@@ -80,5 +81,15 @@ class FirebaseAutentication @Inject constructor(
 
     override suspend fun isUserLogged(): Flow<UserData?> {
         return  shareData.user
+    }
+
+    override suspend fun getUserLoggedFirebase(idUser:String): Flow<UserData?> = callbackFlow {
+        firebaseDatabase.child("users").child(idUser).get().addOnSuccessListener {
+
+            val userData = it.getValue(UserData::class.java) as UserData
+            trySend(userData).isSuccess
+            close()
+        }
+        awaitClose { }
     }
 }

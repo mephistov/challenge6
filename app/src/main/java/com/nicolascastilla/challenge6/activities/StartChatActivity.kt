@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.nicolascastilla.challenge6.activities.ui.theme.ChallengeTheme
 import com.nicolascastilla.challenge6.composables.ChatComposable
 import com.nicolascastilla.challenge6.ui.theme.BlueGradient
+import com.nicolascastilla.challenge6.ui.theme.StrokeColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,7 +27,7 @@ class StartChatActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = BlueGradient
+                    color = StrokeColor
                 ) {
                     ChatComposable(toChatDAta!!,toChatName!!) {
                         finish()

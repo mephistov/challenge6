@@ -30,6 +30,7 @@ import com.nicolascastilla.challenge6.viewmodels.NewChatViewModel
 class MainActivity : ComponentActivity() {
 
     private val viewModelNewChat: NewChatViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,19 @@ class MainActivity : ComponentActivity() {
                 }
                 startActivity(intent)
             }
+        }
+        viewModel.goToChat.observe(this){
+            validateAndGo(it)
+        }
+    }
+
+    fun validateAndGo(map:HashMap<String,String>?){
+        if(map != null && map.containsKey("name")){
+            val intent = Intent(baseContext, StartChatActivity::class.java).apply {
+                putExtra("CHATUSER",map.getValue("phone"))
+                putExtra("CHATNAME",map.getValue("name"))
+            }
+            startActivity(intent)
         }
     }
 

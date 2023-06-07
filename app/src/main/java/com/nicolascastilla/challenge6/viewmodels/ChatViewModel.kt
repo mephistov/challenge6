@@ -38,7 +38,7 @@ class ChatViewModel @Inject constructor(
                 phone = phone,
                 timestamp = Date().time,
                 lastMessage = "",
-                messages = mutableListOf()
+                //messages = mutableListOf()
             )
             val TchatList = chatUseCase.getAllConversation(data)
             TchatList.collect{
@@ -54,14 +54,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun sendMessage(name:String, phone:String, messa: String){
-        val data = UserChatEntity(
-            name = name,
-            imgProfile = "",
-            phone = phone,
-            timestamp = Date().time,
-            lastMessage = "",
-            messages = mutableListOf()
-        )
+
         val message = Conversation(
             idUser = phone,
             image = "",

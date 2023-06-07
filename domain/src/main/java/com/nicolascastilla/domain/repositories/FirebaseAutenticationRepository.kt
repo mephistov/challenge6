@@ -7,4 +7,5 @@ interface FirebaseAutenticationRepository {
     suspend fun isUserAutenticated(user: UserData): Flow<UserData?>
     suspend fun createUser(user:UserData):Flow<UserData?>
     suspend fun isUserLogged():Flow<UserData?>
+    suspend fun getUserLoggedFirebase(idUser:String):Flow<UserData?>
 }

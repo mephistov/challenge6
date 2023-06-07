@@ -56,7 +56,10 @@ fun NewChatsComposable(navController: NavHostController, viewModel: NewChatViewM
             Row() {
                 TextField(
                     value = text,
-                    onValueChange = { text = it },
+                    onValueChange = {
+                        text = it
+                        viewModel.searchByText(it)
+                                    },
                     placeholder = { Text("Search", color = Color.White,style = TextStyle(fontSize = 14.sp)) },
                     shape = RoundedCornerShape(10),
                     keyboardOptions = KeyboardOptions(

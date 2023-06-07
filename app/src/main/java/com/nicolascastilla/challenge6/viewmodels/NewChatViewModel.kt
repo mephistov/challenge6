@@ -22,6 +22,7 @@ class NewChatViewModel @Inject constructor(
 
     //val fcontactsList: Flow<List<ContactsEntity>> = emptyFlow()//userUseCase.getAllContacts()
     val contactsList = mutableStateOf<List<ContactsEntity>>(listOf())
+    var fullList:List<ContactsEntity> = emptyList()
     val goToChat = MutableLiveData<HashMap<String,String>>()
 
     init {
@@ -29,8 +30,25 @@ class NewChatViewModel @Inject constructor(
             val data = userUseCase.getAllContacts()
             data.collect{
                 contactsList.value = it.sortedBy { it.name }
+                fullList = contactsList.value
             }
         }
+    }
+
+    fun searchByText(text:String){
+        if(text == ""){
+            contactsList.value = fullList
+        }else {
+            var tempList = fullList
+            tempList = tempList.filter {
+                it.name.contains(text, ignoreCase = true) || it.phone.contains(
+                    text,
+                    ignoreCase = true
+                )
+            }
+            contactsList.value =tempList
+        }
+
     }
 
     fun cleanData(){

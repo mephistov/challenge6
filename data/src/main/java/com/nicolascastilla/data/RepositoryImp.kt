@@ -13,6 +13,7 @@ import com.nicolascastilla.domain.repositories.entities.contacts.ContactsEntity
 import com.nicolascastilla.domain.repositories.entities.messages.Chats
 import com.nicolascastilla.domain.repositories.entities.messages.Conversation
 import com.nicolascastilla.domain.repositories.entities.messages.UserChatEntity
+import com.nicolascastilla.domain.repositories.extensions.orderToFirebaseDb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -37,18 +38,41 @@ class RepositoryImp @Inject constructor(
     lateinit var referConversation : DatabaseReference
 
     override fun getAllData(): Flow<List<UserChatEntity>> = callbackFlow {
-        val user = userPreferences.user
+        val user = userPreferences.user.first()
         val listener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-               /* val users = dataSnapshot//.children.mapNotNull { it.getValue(MessageItem::class.java) }
-                val cant = users.childrenCount
-                Log.e("TEST","cant: $cant")
-
+               // val users = dataSnapshot//.children.mapNotNull { it.getValue(MessageItem::class.java) }
+              //  val cant = users.childrenCount
+             //   Log.e("TEST","cant: $cant")
                 val listMessages:MutableList<UserChatEntity> = mutableListOf()
-                for (childSnapshot in dataSnapshot.children) {
+                user?.let {userData->
+
+                    for (childSnapshot in dataSnapshot.children) {
+                        val hijo = childSnapshot.key
+                        hijo?.let {
+                            val splitter = it.split("_")
+                            if(splitter[0] == userData.phone){
+                                val tempData = childSnapshot.getValue(UserChatEntity::class.java)
+                                tempData?.let {ue->
+                                    listMessages.add(ue)
+                                }
+
+                            }
+                            if(splitter[1] == userData.phone){
+                                val tempData = childSnapshot.getValue(UserChatEntity::class.java)
+                                tempData?.let {ue->
+                                    listMessages.add(ue)
+                                }
+                            }
+                        }
+
+                    }
+                    trySend(listMessages).isSuccess
+                }
+
                     // Aquí puedes obtener la clave y/o el valor de cada hijo
                     // Extract the non-conversation fields
-                    val imgProfile = childSnapshot.child("imgProfile").getValue(String::class.java) ?: ""
+            /*        val imgProfile = childSnapshot.child("imgProfile").getValue(String::class.java) ?: ""
                     val lastMessage = childSnapshot.child("lastMessage").getValue(String::class.java) ?: ""
                     val name = childSnapshot.child("name").getValue(String::class.java) ?: ""
                     val timestamp = childSnapshot.child("timestamp").getValue(Int::class.java) ?: 0
@@ -80,10 +104,8 @@ class RepositoryImp @Inject constructor(
                 close(databaseError.toException())
             }
         }
-       /* user.first()?.let {
-            firebaseDatabase.child("chats").child(it.uid).addValueEventListener(listener)
-        }*/
 
+        firebaseDatabase.child("chats").addValueEventListener(listener)
         awaitClose { firebaseDatabase.removeEventListener(listener) }
 
 
@@ -97,7 +119,7 @@ class RepositoryImp @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             val myuser = userPreferences.user.first()
             val myRef = myuser?.let {
-                firebaseDatabase.child("chats").child(it.phone).child(data.phone).setValue(data)
+                firebaseDatabase.child("chats").child((it.phone+"_"+data.phone).orderToFirebaseDb()).setValue(data)
             }
         }
     }
@@ -136,8 +158,7 @@ class RepositoryImp @Inject constructor(
         user.first()?.let {
             referConversation = firebaseDatabase
                 .child("chats")
-                .child(it.phone)
-                .child(data.phone)
+                .child((it.phone+"_"+data.phone).orderToFirebaseDb())
                 .child("messages")
 
             referConversation.addValueEventListener(listener)
