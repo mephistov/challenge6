@@ -7,6 +7,7 @@ import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.Preferences
 import com.nicolascastilla.data.local.preferences.UserPreferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.nicolascastilla.data.local.contacts.GetContactsRepository
 import com.nicolascastilla.data.network.api.ChallengeApi
 import dagger.Module
 import dagger.Provides
@@ -44,6 +45,11 @@ object NetworkModule {
     @Provides
     fun provideContext(application: Application): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    fun provideGetContactsRepository(@ApplicationContext context: Context):GetContactsRepository{
+        return GetContactsRepository(context)
     }
 
 }

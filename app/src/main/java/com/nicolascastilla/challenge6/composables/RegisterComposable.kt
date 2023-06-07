@@ -1,6 +1,5 @@
 package com.nicolascastilla.challenge6.composables
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -35,22 +34,20 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nicolascastilla.challenge6.R
-import com.nicolascastilla.challenge6.activities.LoginRegisterActivity
 import com.nicolascastilla.challenge6.composables.utils.LoadingScreen
 import com.nicolascastilla.challenge6.ui.theme.BackgroundColor
 import com.nicolascastilla.challenge6.ui.theme.Orange
+import com.nicolascastilla.challenge6.viewmodels.RegisterUserDataViewModel
 import com.nicolascastilla.challenge6.viewmodels.UserDataViewModel
 
 @Composable
-fun LoginComposable(onClose: () -> Unit){
+fun RegisterComposable(onClose: () -> Unit){
     //var email by remember { mutableStateOf("") }
    // var password by remember { mutableStateOf("") }
-    val viewModel = viewModel<UserDataViewModel>()
-    val context = LocalContext.current
+    val viewModel = viewModel<RegisterUserDataViewModel>()
 
     Box (
         modifier = Modifier
@@ -68,7 +65,7 @@ fun LoginComposable(onClose: () -> Unit){
         ) {
             Image(painter = painterResource(R.drawable.logochat), contentDescription = "Logo")
             Text(
-                text = "Sign In to Nick Chat",
+                text = "Sign In / Register to Nick Chat",
             )
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
@@ -76,6 +73,31 @@ fun LoginComposable(onClose: () -> Unit){
                 onValueChange = {viewModel.email.value = it },
                 placeholder = { Text("Email", color = TitleColor,style = TextStyle(fontSize = 14.sp)) },
                 label = { Text("Email") },
+                leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = PrimaryBlue,
+                    unfocusedBorderColor = PrimaryBlue
+                )
+            )
+            OutlinedTextField(
+                value = viewModel.phone.value,
+                onValueChange = {viewModel.phone.value = it },
+                placeholder = { Text("Phone", color = TitleColor,style = TextStyle(fontSize = 14.sp)) },
+                label = { Text("Phone") },
+                leadingIcon = { Icon(Icons.Default.Phone, contentDescription = null) },
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = PrimaryBlue,
+                    unfocusedBorderColor = PrimaryBlue
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = viewModel.name.value,
+                onValueChange = {viewModel.name.value = it },
+                placeholder = { Text("Name", color = TitleColor,style = TextStyle(fontSize = 14.sp)) },
+                label = { Text("Name") },
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -109,7 +131,6 @@ fun LoginComposable(onClose: () -> Unit){
             ) {
                 Text("Go Inside")
             }
-
             Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = {
@@ -122,7 +143,7 @@ fun LoginComposable(onClose: () -> Unit){
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Register")
+                Text("log In")
             }
         }
         if(viewModel.isLoading.value)

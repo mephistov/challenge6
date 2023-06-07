@@ -26,8 +26,8 @@ class FirebaseAutentication @Inject constructor(
 
 
     override suspend fun isUserAutenticated(user: UserData): Flow<UserData?> = callbackFlow {
-        val authResultTask = aut.signInWithEmailAndPassword(user.emai,user.password)
-                authResultTask.addOnCompleteListener { task ->
+        aut.signInWithEmailAndPassword(user.emai,user.password)
+                .addOnCompleteListener { task ->
                     if(task.isSuccessful){
                         val userF = aut.currentUser
                         //TODO get user from firebase uid ref
@@ -36,7 +36,7 @@ class FirebaseAutentication @Inject constructor(
                             name = "",
                             emai = user.emai,
                             password = user.password,
-                            phone= "",
+                            phone= user.phone,
                             uid = task.result.user?.uid!!
                         )
                         CoroutineScope(Dispatchers.IO).launch {
@@ -61,7 +61,7 @@ class FirebaseAutentication @Inject constructor(
         aut.createUserWithEmailAndPassword(user.emai,user.password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful){
-                    val myRef = firebaseDatabase.child("users").child(task.result.user?.uid!!)
+                    val myRef = firebaseDatabase.child("users").child(user.phone)//task.result.user?.uid!!
                     user.uid = task.result.user?.uid!!
                     myRef.setValue(user)
                     CoroutineScope(Dispatchers.IO).launch {

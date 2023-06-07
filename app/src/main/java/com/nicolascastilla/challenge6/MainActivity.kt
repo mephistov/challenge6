@@ -1,8 +1,11 @@
 package com.nicolascastilla.challenge6
 
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,9 +20,17 @@ import com.nicolascastilla.challenge6.ui.theme.ChallengeTheme
 import com.nicolascastilla.challenge6.viewmodels.MainViewModel
 import com.nicolascastilla.challenge6.viewmodels.UserDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import android.Manifest
+import android.content.Intent
+import androidx.activity.viewModels
+import com.nicolascastilla.challenge6.activities.StartChatActivity
+import com.nicolascastilla.challenge6.viewmodels.NewChatViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModelNewChat: NewChatViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -29,23 +40,35 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel = viewModel<UserDataViewModel>()
+                    MainComposable()
+                   /* val viewModel = viewModel<UserDataViewModel>()
                     if(viewModel.isRegisterUser.value){
                         MainComposable()
                     }else{
                         LoginComposable()
-                    }
+                    }*/
 
                 }
             }
         }
+
+        viewModelNewChat.goToChat.observe(this){
+            if(it != null && it.containsKey("name")){
+                val intent = Intent(baseContext, StartChatActivity::class.java).apply {
+                    putExtra("CHATUSER",it.getValue("phone"))
+                    putExtra("CHATNAME",it.getValue("name"))
+                }
+                startActivity(intent)
+            }
+        }
     }
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     ChallengeTheme {
-        LoginComposable()
+        MainComposable()
     }
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">6 Challenge</string>
     <string name="title_activity_login_register">LoginRegisterActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_start_chat">StartChatActivity</string>
 </resources>

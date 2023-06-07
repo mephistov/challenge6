@@ -22,18 +22,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nicolascastilla.challenge6.ui.theme.BlueGradient
 import com.nicolascastilla.challenge6.viewmodels.MainViewModel
+import com.nicolascastilla.challenge6.viewmodels.NewChatViewModel
 
 @Composable
 fun MainComposable(){
     val viewModel = viewModel<MainViewModel>()
     val navController = rememberNavController()
     val context = LocalContext.current
+    val viewModelContacts = viewModel<NewChatViewModel>()
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            // Permission Accepted: Do something
+            navController.navigate("routeContacts")
             Log.e("ExampleScreen","PERMISSION GRANTED")
 
         } else {
@@ -43,7 +45,7 @@ fun MainComposable(){
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        MyNavHost(navController,viewModel)
+        MyNavHost(navController,viewModel,viewModelContacts)
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -53,13 +55,18 @@ fun MainComposable(){
         ) {
             Row() {
                 Button(onClick = {
+                    navController.navigate("routeMain")
+                }) {
+                    Text(text = "Chats")
+                }
+                Button(onClick = {
                     when (PackageManager.PERMISSION_GRANTED) {
                         ContextCompat.checkSelfPermission(
                             context,
                             Manifest.permission.READ_CONTACTS
                         ) -> {
                             // Some works that require permission
-                            Log.d("ExampleScreen","Code requires permission")
+                            navController.navigate("routeContacts")
                         }
                         else -> {
                             // Asking for permission
@@ -69,6 +76,12 @@ fun MainComposable(){
                 }) {
                    Text(text = "Contactos")
                 }
+                Button(onClick = {
+                    //navController.navigate("routeMain")
+                }) {
+                    Text(text = "Profile")
+                }
+
             }
         }
         
@@ -80,10 +93,11 @@ fun MainComposable(){
 fun MyNavHost(
     navController: NavHostController,
     //scaffolState: ScaffoldState,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    viewModelNew: NewChatViewModel
 ) {
     NavHost(navController = navController, startDestination = "routeMain") {
-        composable("routeMain") { HomeComposable(viewModel) }
-        //composable("routeFavorites") { ScreenFavorites(navController,viewModel) }
+        composable("routeMain") { HomeComposable(navController,viewModel) }
+        composable("routeContacts") { NewChatsComposable(navController,viewModelNew) }
     }
 }

@@ -9,10 +9,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.nicolascastilla.challenge6.viewmodels.MainViewModel
 
 @Composable
-fun HomeComposable(viewModel: MainViewModel){
+fun HomeComposable(navController: NavHostController?, viewModel: MainViewModel){
 
     val listItems by viewModel.myItems.collectAsState(initial = emptyList())
 Text("aqui viewnen los chats")

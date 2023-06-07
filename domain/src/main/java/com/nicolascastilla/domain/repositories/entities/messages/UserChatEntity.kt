@@ -1,9 +1,10 @@
 package com.nicolascastilla.domain.repositories.entities.messages
 
 data class UserChatEntity(
-    val chats: Chats,
+    var messages: MutableList<Conversation>,
     val imgProfile: String,
     val lastMessage: String,
     val name: String,
-    val timestamp: Int
+    val timestamp: Long,
+    val phone:String
 )

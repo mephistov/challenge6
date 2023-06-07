@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserDataViewModel @Inject constructor(
+class RegisterUserDataViewModel @Inject constructor(
     private val userUseCase:GetAutenticationUseCase
 ):ViewModel() {
 
@@ -30,26 +30,14 @@ class UserDataViewModel @Inject constructor(
 
 
     init {
-        viewModelScope.launch {
-            val data = userUseCase.isUserLogged()
-            data.collect{
-                it?.let {
-                    userData = it
-                    isRegisterUser.value = true
-                    isValidated.postValue(true)
-                }
-                if(it == null)
-                    isValidated.postValue(false)
 
-            }
-        }
     }
 
 
     fun validateUser() {
         val userData = UserData(
             systemId = "",
-            name = "",
+            name = name.value,
             emai = email.value,
             password = password.value,
             phone=phone.value,
@@ -57,23 +45,16 @@ class UserDataViewModel @Inject constructor(
         )
         isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            val tempU = userUseCase.isUserAutenticated(userData)
-            tempU.collect {
-                if(it != null){
-                    isRegisterUser.value = true
-                    isValidated.postValue(true)
-                }/*else{
-                    val tempUseD = userUseCase.createuser(userData)
-                    tempUseD.collect{createData->
-                        if(createData != null){
-                            isRegisterUser.value = true
-                        }
+
+                val tempUseD = userUseCase.createuser(userData)
+                tempUseD.collect{createData->
+                    if(createData != null){
+                        isRegisterUser.value = true
+                        isValidated.postValue(true)
                     }
+                }
 
 
-                }*/
-
-            }
             isLoading.value = false
 
         }
