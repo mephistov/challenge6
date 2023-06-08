@@ -1,5 +1,6 @@
 package com.nicolascastilla.domain
 
+import com.nicolascastilla.domain.repositories.extensions.orderToFirebaseDb
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,6 +13,17 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        var valor = "123456_654987"
+        assertEquals(valor.orderToFirebaseDb(), "123456_654987")
+        valor = "10_+4"
+        assertEquals(valor.orderToFirebaseDb(), "4_10")
+        valor = "casa fea"
+        assertEquals(valor.orderToFirebaseDb(), "ERROR")
+        valor = ""
+        assertEquals(valor.orderToFirebaseDb(), "ERROR")
+        valor = "_3242342"
+        assertEquals(valor.orderToFirebaseDb(), "ERROR")
+        valor = "7_10_1"
+        assertEquals(valor.orderToFirebaseDb(), "1_7_10")
     }
 }

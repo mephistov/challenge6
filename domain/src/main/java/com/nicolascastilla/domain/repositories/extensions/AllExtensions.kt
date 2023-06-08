@@ -11,19 +11,20 @@ fun Long.toHumanDate():String{
 
 fun String.orderToFirebaseDb():String{
     val parts = this.split("_")
-    if(parts.size != 2)
-        return "ERROR"
-    if(parts[0] == "" || parts[1] == "")
+    if(parts.size < 2)
         return "ERROR"
 
-    val val1 = parts[0].replace(Regex("\\D"), "").toLong()
-    val val2 = parts[1].replace(Regex("\\D"), "").toLong()
 
+    //val val1 = parts[0].replace(Regex("\\D"), "").toLong()
+    val sortedList = parts.map {
+        if(it == "")
+            return "ERROR"
+        it.replace(Regex("\\D"), "").toLong()
+    }.sorted()
     var responde =""
-    if(val1 < val2)
-        responde = "${val1}_${val2}"
-    else
-        responde = "${val2}_${val1}"
+    for(tel in sortedList){
+        responde += "${tel}_"
+    }
 
-    return responde
+    return responde.dropLast(1)
 }

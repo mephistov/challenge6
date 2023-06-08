@@ -51,19 +51,15 @@ class RepositoryImp @Inject constructor(
                         val hijo = childSnapshot.key
                         hijo?.let {
                             val splitter = it.split("_")
-                            if(splitter[0] == userData.phone){
-                                val tempData = childSnapshot.getValue(UserChatEntity::class.java)
-                                tempData?.let {ue->
-                                    listMessages.add(ue)
+                            for(item in splitter){
+                                if(item == userData.phone){
+                                    val tempData = childSnapshot.getValue(UserChatEntity::class.java)
+                                    tempData?.let {ue->
+                                        listMessages.add(ue)
+                                    }
                                 }
+                            }
 
-                            }
-                            if(splitter[1] == userData.phone){
-                                val tempData = childSnapshot.getValue(UserChatEntity::class.java)
-                                tempData?.let {ue->
-                                    listMessages.add(ue)
-                                }
-                            }
                         }
 
                     }
@@ -72,32 +68,7 @@ class RepositoryImp @Inject constructor(
 
                     // Aquí puedes obtener la clave y/o el valor de cada hijo
                     // Extract the non-conversation fields
-            /*        val imgProfile = childSnapshot.child("imgProfile").getValue(String::class.java) ?: ""
-                    val lastMessage = childSnapshot.child("lastMessage").getValue(String::class.java) ?: ""
-                    val name = childSnapshot.child("name").getValue(String::class.java) ?: ""
-                    val timestamp = childSnapshot.child("timestamp").getValue(Int::class.java) ?: 0
 
-                    // Extract the conversations
-                    val conversations: MutableList<Conversation> = mutableListOf()
-                    val chatsSnapshot = childSnapshot.child("chats")
-                    for (chatSnapshot in chatsSnapshot.children) {
-                        val idUser = chatSnapshot.child("idUser").getValue(String::class.java) ?: ""
-                        val image = chatSnapshot.child("image").getValue(String::class.java) ?: ""
-                        val message = chatSnapshot.child("message").getValue(String::class.java) ?: ""
-                        val convName = chatSnapshot.child("name").getValue(String::class.java) ?: ""
-
-                        val conversation = Conversation(idUser, image, message, convName)
-                        conversations.add(conversation)
-                    }
-
-                    // Construct and add the UserChatEntity
-                    val userChatEntity = UserChatEntity(Chats(conversations), imgProfile, lastMessage, name, timestamp)
-                    listMessages.add(userChatEntity)
-
-                }
-
-                trySend(listMessages).isSuccess
-*/
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -159,9 +130,9 @@ class RepositoryImp @Inject constructor(
             referConversation = firebaseDatabase
                 .child("chats")
                 .child((it.phone+"_"+data.phone).orderToFirebaseDb())
-                .child("messages")
 
-            referConversation.addValueEventListener(listener)
+
+            referConversation.child("messages").addValueEventListener(listener)
 
 
         }
@@ -169,7 +140,9 @@ class RepositoryImp @Inject constructor(
     }
 
     override fun sendMessage(message: Conversation) {
-        referConversation.child(message.timestamp.toString()).setValue(message)
+        referConversation.child("messages").child(message.timestamp.toString()).setValue(message)
+        referConversation.child("timestamp").setValue(message.timestamp)
+        referConversation.child("lastMessage").setValue(message.message)
     }
 
 }

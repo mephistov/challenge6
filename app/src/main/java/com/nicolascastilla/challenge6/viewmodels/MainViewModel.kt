@@ -1,11 +1,14 @@
 package com.nicolascastilla.challenge6.viewmodels
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.nicolascastilla.challenge6.ui.theme.BlueGradient
+import com.nicolascastilla.challenge6.ui.theme.StrokeColor
 import com.nicolascastilla.domain.repositories.entities.MessageItem
 import com.nicolascastilla.domain.repositories.entities.messages.UserChatEntity
 import com.nicolascastilla.domain.repositories.usecases.interfaces.GetInfoUseCase
@@ -19,6 +22,8 @@ class MainViewModel @Inject constructor(
 ):ViewModel() {
 
     val goToChat = MutableLiveData<HashMap<String,String>>()
+    val selectedChatColor =  mutableStateOf(BlueGradient)
+    val selectedProfileColor =  mutableStateOf(StrokeColor)
 
     fun setChatView(item: UserChatEntity) {
         val tempHasmap = HashMap<String,String>()

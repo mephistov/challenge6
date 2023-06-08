@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -89,7 +90,10 @@ fun RowChats(item: UserChatEntity, onClickPressed:(UserChatEntity)->Unit){
                 )
                 Text(
                     item.lastMessage,
-                    style = TextStyle(fontSize = 14.sp)
+                    style = TextStyle(fontSize = 14.sp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Text(

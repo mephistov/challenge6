@@ -60,7 +60,13 @@ fun ChatComposable(phone: String, name: String, onBackPressed: () -> Unit){
                 //.height(60.dp)
         ) {
             TopAppBar(
-                title = { Text(name, textAlign = TextAlign.Center) },
+                title = {
+                    Column() {
+                        Text(name, textAlign = TextAlign.Center)
+                        Text(phone, textAlign = TextAlign.Center, style = TextStyle(fontSize = 11.sp))
+                    }
+
+                },
                 navigationIcon = {
                     IconButton(onClick = {
                         onBackPressed()
@@ -165,7 +171,8 @@ fun ChatBubbleMy( message:String,time:String) {
             )
             Text(
                 time,
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
                     .padding(end = 5.dp),
                 style = TextStyle(fontSize = 8.sp)
 
@@ -209,7 +216,8 @@ fun ChatBubbleOther( message:String,time:String) {
             )
             Text(
                 time,
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
                     .padding(end = 5.dp),
                 style = TextStyle(fontSize = 8.sp)
 
