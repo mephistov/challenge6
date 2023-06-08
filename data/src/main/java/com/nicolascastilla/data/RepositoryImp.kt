@@ -55,6 +55,7 @@ class RepositoryImp @Inject constructor(
                                 if(item == userData.phone){
                                     val tempData = childSnapshot.getValue(UserChatEntity::class.java)
                                     tempData?.let {ue->
+                                        tempData.idChat = it
                                         listMessages.add(ue)
                                     }
                                 }
@@ -129,7 +130,7 @@ class RepositoryImp @Inject constructor(
         user.first()?.let {
             referConversation = firebaseDatabase
                 .child("chats")
-                .child((it.phone+"_"+data.phone).orderToFirebaseDb())
+                .child(data.idChat)
 
 
             referConversation.child("messages").addValueEventListener(listener)

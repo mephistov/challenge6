@@ -9,7 +9,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.nicolascastilla.challenge6.activities.ui.theme.ChallengeTheme
 import com.nicolascastilla.challenge6.composables.ChatComposable
-import com.nicolascastilla.challenge6.ui.theme.BlueGradient
 import com.nicolascastilla.challenge6.ui.theme.StrokeColor
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +19,7 @@ class StartChatActivity : ComponentActivity() {
 
         val toChatDAta = intent?.getStringExtra("CHATUSER")
         val toChatName = intent?.getStringExtra("CHATNAME")
+        val toChatID = intent?.getStringExtra("CHATID")
         Log.e("TEST","usertoSearch: ${toChatDAta}")
 
         setContent {
@@ -29,7 +29,7 @@ class StartChatActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = StrokeColor
                 ) {
-                    ChatComposable(toChatDAta!!,toChatName!!) {
+                    ChatComposable(toChatDAta!!,toChatName!!,toChatID!!) {
                         finish()
                     }
                 }

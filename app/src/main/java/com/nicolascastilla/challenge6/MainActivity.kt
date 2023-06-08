@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
                 val intent = Intent(baseContext, StartChatActivity::class.java).apply {
                     putExtra("CHATUSER",it.getValue("phone"))
                     putExtra("CHATNAME",it.getValue("name"))
+                    putExtra("CHATID",it.getValue("idChat"))
                 }
                 startActivity(intent)
             }
@@ -72,9 +73,15 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(baseContext, StartChatActivity::class.java).apply {
                 putExtra("CHATUSER",map.getValue("phone"))
                 putExtra("CHATNAME",map.getValue("name"))
+                putExtra("CHATID",map.getValue("idChat"))
             }
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        finish()
     }
 
 }

@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicolascastilla.challenge6.utils.GlobalInfo
 import com.nicolascastilla.domain.repositories.entities.contacts.ContactsEntity
+import com.nicolascastilla.domain.repositories.extensions.orderToFirebaseDb
 import com.nicolascastilla.domain.repositories.usecases.interfaces.GetAutenticationUseCase
 import com.nicolascastilla.domain.repositories.usecases.interfaces.GetInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,6 +74,8 @@ class NewChatViewModel @Inject constructor(
         val tempHasmap = HashMap<String,String>()
         tempHasmap.put("phone",usesrsChat)
         tempHasmap.put("name",usesrsNames)
+        val id = "${GlobalInfo.globalUserData?.phone}_${usesrsChat}".orderToFirebaseDb()
+        tempHasmap.put("idChat",id)
         goToChat.value= tempHasmap
         cleanData()
     }

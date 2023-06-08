@@ -10,14 +10,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,6 +72,7 @@ fun MyNavHost(
     NavHost(navController = navController, startDestination = "routeMain") {
         composable("routeMain") { HomeComposable(navController,viewModel) }
         composable("routeContacts") { NewChatsComposable(navController,viewModelNew) }
+        composable("routeProfile") { ProfileComposable(navController,viewModel) }
     }
 }
 
@@ -178,7 +177,7 @@ fun BannerBottom(navController: NavHostController,viewModel: MainViewModel) {
                 .clickable {
                     viewModel.selectedChatColor.value = StrokeColor
                     viewModel.selectedProfileColor.value = BlueGradient
-
+                    navController.navigate("routeProfile")
                 }
                 .background(Color.Transparent),
 

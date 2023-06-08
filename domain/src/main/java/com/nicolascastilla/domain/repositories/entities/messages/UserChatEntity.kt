@@ -6,5 +6,6 @@ data class UserChatEntity(
     val lastMessage: String = "",
     val name: String = "",
     val timestamp: Long = 0L,
-    val phone:String = ""
+    val phone:String = "",
+    var idChat:String = "",
 )

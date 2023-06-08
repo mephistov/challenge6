@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicolascastilla.challenge6.utils.GlobalInfo.globalUserData
 import com.nicolascastilla.domain.repositories.entities.UserData
 import com.nicolascastilla.domain.repositories.usecases.interfaces.GetAutenticationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +36,7 @@ class UserDataViewModel @Inject constructor(
             data.collect{
                 it?.let {
                     userData = it
+                    globalUserData = it
                     isRegisterUser.value = true
                     isValidated.postValue(true)
                 }

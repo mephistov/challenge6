@@ -2,7 +2,6 @@ package com.nicolascastilla.challenge6.composables
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -10,44 +9,34 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nicolascastilla.challenge6.ui.theme.BlueGradient
-import com.nicolascastilla.challenge6.ui.theme.ChallengeTheme
-import com.nicolascastilla.challenge6.ui.theme.PrimaryBlue
-import com.nicolascastilla.challenge6.ui.theme.StrokeColor
+import com.nicolascastilla.challenge6.ui.theme.*
+import com.nicolascastilla.challenge6.utils.GlobalInfo
 import com.nicolascastilla.challenge6.viewmodels.ChatViewModel
 import com.nicolascastilla.domain.repositories.entities.messages.Conversation
 import com.nicolascastilla.domain.repositories.extensions.toHumanDate
 import kotlinx.coroutines.launch
 
 @Composable
-fun ChatComposable(phone: String, name: String, onBackPressed: () -> Unit){
-
+fun ChatComposable(phone: String, name: String, idChat: String, onBackPressed: () -> Unit){
+    val myPhone = GlobalInfo.globalUserData?.phone
     val messages = remember { mutableStateListOf<String>() }
     var textFieldState by remember { mutableStateOf("") }
     val viewModel = viewModel<ChatViewModel>()
     val coroutineScope = rememberCoroutineScope()
-    viewModel.setupFirstChat(name,phone)
+    viewModel.setupFirstChat(name,phone,idChat)
     val listState = rememberLazyListState()
    // val chatList by viewModel.chatList.collectAsState(emptyList())
 
@@ -89,7 +78,7 @@ fun ChatComposable(phone: String, name: String, onBackPressed: () -> Unit){
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             itemsIndexed(viewModel.chatList.value) {index, item ->
-                if(phone == item.idUser) {
+                if(myPhone == item.idUser) {
                     ChatBubbleMy(item.message,item.timestamp.toHumanDate())
                 }else{
                     ChatBubbleOther(item.message,item.timestamp.toHumanDate())
@@ -162,7 +151,7 @@ fun ChatBubbleMy( message:String,time:String) {
         ) {
             val bubbleModifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-                .background(Color.White)
+                .background(SkeyBlue)
                 .padding(16.dp)
 
             Text(
@@ -180,6 +169,7 @@ fun ChatBubbleMy( message:String,time:String) {
             Canvas(modifier = Modifier
                 .size(10.dp)
                 .align(Alignment.BottomEnd)
+
             ) {
                 drawPath(
                     path = Path().apply {
@@ -188,7 +178,7 @@ fun ChatBubbleMy( message:String,time:String) {
                         lineTo(0f, size.height)
                         close()
                     },
-                    color = Color.White
+                    color = SkeyBlue
                 )
             }
         }

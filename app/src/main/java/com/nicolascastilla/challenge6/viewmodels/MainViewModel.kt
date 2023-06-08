@@ -29,6 +29,7 @@ class MainViewModel @Inject constructor(
         val tempHasmap = HashMap<String,String>()
         tempHasmap.put("phone",item.phone)
         tempHasmap.put("name",item.name)
+        tempHasmap.put("idChat",item.idChat)
         goToChat.value= tempHasmap
     }
 
