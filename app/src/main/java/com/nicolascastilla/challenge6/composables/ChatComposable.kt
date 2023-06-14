@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 fun ChatComposable(phone: String, name: String, idChat: String, onBackPressed: () -> Unit){
     val myPhone = GlobalInfo.globalUserData?.phone
     val messages = remember { mutableStateListOf<String>() }
-    var textFieldState by remember { mutableStateOf("") }
     val viewModel = viewModel<ChatViewModel>()
     val coroutineScope = rememberCoroutineScope()
     viewModel.setupFirstChat(name,phone,idChat)
@@ -86,48 +85,7 @@ fun ChatComposable(phone: String, name: String, idChat: String, onBackPressed: (
                //Spacer(modifier = Modifier.height(16.dp))
             }
         }
-        Box(
-            modifier = Modifier
-                .imePadding()
-                .fillMaxWidth()
-                .background(Color.White)
-                .height(80.dp)
-        ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center)
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextField(
-                    value = textFieldState,
-                    onValueChange = { textFieldState = it },
-                    Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp),
-                    placeholder = { Text("Escribe un mensaje...") },
-
-
-                )
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = PrimaryBlue, // color de fondo del botón
-                        contentColor = Color.White // color del contenido del botón (ej. texto)
-                    ),
-                    onClick = {
-                        if(textFieldState != "") {
-                            viewModel.sendMessage(name, phone, textFieldState)
-                            textFieldState = ""
-                        }
-
-                    }
-                ) {
-                    Text("Enviar")
-                }
-            }
-        }
+        AbstractionTextField(viewModel,name,phone)
     }
 
     if(viewModel.chatList.value.size > 0){
@@ -137,6 +95,54 @@ fun ChatComposable(phone: String, name: String, idChat: String, onBackPressed: (
     }
 
 
+}
+
+@Composable
+fun AbstractionTextField(viewModel: ChatViewModel,name: String,phone:String){
+    var textFieldState by remember { mutableStateOf("") }
+
+    Box(
+        modifier = Modifier
+            .imePadding()
+            .fillMaxWidth()
+            .background(Color.White)
+            .height(80.dp)
+    ) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = textFieldState,
+                onValueChange = { textFieldState = it },
+                Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                placeholder = { Text("Escribe un mensaje...") },
+
+
+                )
+
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = PrimaryBlue, // color de fondo del botón
+                    contentColor = Color.White // color del contenido del botón (ej. texto)
+                ),
+                onClick = {
+                    if(textFieldState != "") {
+                        viewModel.sendMessage(name, phone, textFieldState)
+                        textFieldState = ""
+                    }
+
+                }
+            ) {
+                Text("Enviar")
+            }
+        }
+    }
 }
 
 @Composable

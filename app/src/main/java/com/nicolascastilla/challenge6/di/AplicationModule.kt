@@ -1,5 +1,9 @@
 package com.nicolascastilla.challenge6.di
 
+import android.content.Context
+import com.nicolascastilla.challenge6.utils.SystemSoundImpl
+import com.nicolascastilla.data.local.contacts.GetContactsRepository
+import com.nicolascastilla.data.local.interfaces_core.SystemSoundUsage
 import com.nicolascastilla.domain.repositories.usecases.GetAutenticationUseCaseImpl
 import com.nicolascastilla.domain.repositories.usecases.GetChatUseCasesImpl
 import com.nicolascastilla.domain.repositories.usecases.GetInfoUseCaseImpl
@@ -8,7 +12,9 @@ import com.nicolascastilla.domain.repositories.usecases.interfaces.GetChatUseCas
 import com.nicolascastilla.domain.repositories.usecases.interfaces.GetInfoUseCase
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -22,6 +28,7 @@ abstract class AplicationModule {
     abstract fun bindsGetDataUseCases(useCaseImpl: GetAutenticationUseCaseImpl): GetAutenticationUseCase
     @Binds
     abstract fun bindsGetChatUseCases(useCaseImpl: GetChatUseCasesImpl): GetChatUseCases
+
 
 
 }

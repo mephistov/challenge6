@@ -9,13 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import com.nicolascastilla.challenge6.ui.theme.BlueGradient
+import com.nicolascastilla.challenge6.ui.theme.BlueGradientTransparent
 
 @Composable
 fun LoadingScreen(){
 
     Box(
         modifier = Modifier.fillMaxSize()
-            .background(BlueGradient)
+            .background(BlueGradientTransparent)
             .zIndex(1f)
     ) {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

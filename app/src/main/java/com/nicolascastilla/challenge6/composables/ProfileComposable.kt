@@ -1,10 +1,7 @@
 package com.nicolascastilla.challenge6.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +16,7 @@ import com.nicolascastilla.challenge6.viewmodels.MainViewModel
 fun ProfileComposable(navController: NavHostController, viewModel: MainViewModel) {
     viewModel.gerUserInfo()
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

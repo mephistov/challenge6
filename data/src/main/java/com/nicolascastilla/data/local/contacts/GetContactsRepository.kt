@@ -3,6 +3,7 @@ package com.nicolascastilla.data.local.contacts
 import android.content.Context
 import android.provider.ContactsContract
 import com.nicolascastilla.domain.repositories.entities.contacts.ContactsEntity
+import com.nicolascastilla.domain.repositories.extensions.cleanPhoneNumber
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -43,14 +44,19 @@ class GetContactsRepository @Inject constructor(
                         )
                         phoneCursor?.use {
                             val phoneNumberIndex = phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                            var lastPhone = ""
                             if (phoneNumberIndex != -1) {
                                 while (phoneCursor.moveToNext()) {
                                     val phoneNumber = phoneCursor.getString(phoneNumberIndex)
-                                    listContacts.add(ContactsEntity(
-                                        id = idContact,
-                                        name= name,
-                                        phone = phoneNumber
-                                    ))
+                                    if(phoneNumber.cleanPhoneNumber() != lastPhone.cleanPhoneNumber()){
+                                        listContacts.add(ContactsEntity(
+                                            id = idContact,
+                                            name= name,
+                                            phone = phoneNumber
+                                        ))
+                                        lastPhone = phoneNumber
+                                    }
+
 
                                 }
                             }

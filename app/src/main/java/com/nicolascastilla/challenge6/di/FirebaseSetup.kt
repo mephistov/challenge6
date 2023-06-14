@@ -1,6 +1,10 @@
 package com.nicolascastilla.challenge6.di
 import android.content.Context
 import com.google.firebase.FirebaseApp
+import com.nicolascastilla.challenge6.utils.SystemSoundImpl
+import com.nicolascastilla.data.local.contacts.GetContactsRepository
+import com.nicolascastilla.data.local.interfaces_core.SystemSoundUsage
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +22,11 @@ object FirebaseSetup {
         val firebaseApp: FirebaseApp? = FirebaseApp.initializeApp(context)
 
         return firebaseApp ?: throw IllegalStateException("FirebaseApp not initialized")
+    }
+
+    @Provides
+    fun provideGetSystemSoundRepository(@ApplicationContext context: Context): SystemSoundUsage {
+        return SystemSoundImpl(context)
     }
 
 }

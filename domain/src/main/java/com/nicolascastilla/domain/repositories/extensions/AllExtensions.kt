@@ -9,6 +9,10 @@ fun Long.toHumanDate():String{
     return sdf.format(Date(this))
 }
 
+fun String.cleanPhoneNumber():String{
+    return this.replace(Regex("\\D"), "")
+}
+
 fun String.orderToFirebaseDb():String{
     val parts = this.split("_")
     if(parts.size < 2)

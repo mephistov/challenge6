@@ -51,6 +51,8 @@ fun LoginComposable(onClose: () -> Unit){
    // var password by remember { mutableStateOf("") }
     val viewModel = viewModel<UserDataViewModel>()
     val context = LocalContext.current
+    if(viewModel.isLoading.value)
+        LoadingScreen()
 
     Box (
         modifier = Modifier
@@ -125,8 +127,9 @@ fun LoginComposable(onClose: () -> Unit){
                 Text("Register")
             }
         }
-        if(viewModel.isLoading.value)
-            LoadingScreen()
+
+
+
     }
 }
 

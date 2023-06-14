@@ -1,5 +1,6 @@
 package com.nicolascastilla.domain
 
+import com.nicolascastilla.domain.repositories.extensions.cleanPhoneNumber
 import com.nicolascastilla.domain.repositories.extensions.orderToFirebaseDb
 import org.junit.Test
 
@@ -10,7 +11,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class FirebaseFormatUnitTest {
     @Test
     fun addition_isCorrect() {
         var valor = "123456_654987"
@@ -26,4 +27,10 @@ class ExampleUnitTest {
         valor = "7_10_1"
         assertEquals(valor.orderToFirebaseDb(), "1_7_10")
     }
+    @Test
+    fun phoneFormatTest() {
+        assertEquals("+57 258 5623".cleanPhoneNumber(), "572585623")
+        assertEquals(" 258 5623".cleanPhoneNumber(), "2585623")
+    }
+
 }

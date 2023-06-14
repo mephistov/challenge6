@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.nicolascastilla.data.local.preferences.UserPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.nicolascastilla.data.local.contacts.GetContactsRepository
+import com.nicolascastilla.data.local.interfaces_core.SystemSoundUsage
 import com.nicolascastilla.data.network.api.ChallengeApi
 import dagger.Module
 import dagger.Provides
@@ -41,7 +42,7 @@ object NetworkModule {
     fun provideChallengeApi(retrofit: Retrofit): ChallengeApi {
         return retrofit.create(ChallengeApi::class.java)
     }
-
+//--- no de network pero para ahorrar timepo ---
     @Provides
     fun provideContext(application: Application): Context {
         return application.applicationContext
@@ -51,5 +52,8 @@ object NetworkModule {
     fun provideGetContactsRepository(@ApplicationContext context: Context):GetContactsRepository{
         return GetContactsRepository(context)
     }
+
+
+
 
 }

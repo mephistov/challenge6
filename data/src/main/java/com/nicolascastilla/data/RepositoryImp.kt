@@ -1,11 +1,13 @@
 package com.nicolascastilla.data
 
+import android.media.RingtoneManager
 import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nicolascastilla.data.local.contacts.GetContactsRepository
 import com.nicolascastilla.data.local.dao.ChallengeDao
+import com.nicolascastilla.data.local.interfaces_core.SystemSoundUsage
 import com.nicolascastilla.data.local.preferences.UserPreferences
 import com.nicolascastilla.domain.repositories.ChallengeRepository
 import com.nicolascastilla.domain.repositories.entities.MessageItem
@@ -32,6 +34,7 @@ class RepositoryImp @Inject constructor(
     private val firebaseDatabase:DatabaseReference,
     private val userPreferences: UserPreferences,
     val contacts: GetContactsRepository,
+    val systemCore: SystemSoundUsage
 ): ChallengeRepository {
 
    // private val firebaseDatabase: DatabaseReference= Firebase.database.reference
@@ -119,7 +122,7 @@ class RepositoryImp @Inject constructor(
                     listMessages.add(conversation)
 
                 }
-
+               // systemCore.reproduceSound()
                 trySend(listMessages).isSuccess
             }
 

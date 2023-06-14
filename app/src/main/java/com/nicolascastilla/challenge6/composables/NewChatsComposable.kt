@@ -33,6 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nicolascastilla.challenge6.composables.utils.LoadingScreen
 import com.nicolascastilla.challenge6.ui.theme.BlueGradient
+import com.nicolascastilla.challenge6.ui.theme.BodyColor
 import com.nicolascastilla.challenge6.ui.theme.StrokeColor
 import com.nicolascastilla.challenge6.ui.theme.TitleColor
 import com.nicolascastilla.challenge6.viewmodels.MainViewModel
@@ -53,14 +54,19 @@ fun NewChatsComposable(navController: NavHostController, viewModel: NewChatViewM
                 .height(60.dp)
                 .background(BlueGradient)
         ) {
-            Row() {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
                 TextField(
                     value = text,
                     onValueChange = {
                         text = it
                         viewModel.searchByText(it)
                                     },
-                    placeholder = { Text("Search", color = Color.White,style = TextStyle(fontSize = 14.sp)) },
+                    placeholder = { Text("Search", color = StrokeColor,style = TextStyle(fontSize = 14.sp)) },
                     shape = RoundedCornerShape(10),
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done
@@ -78,7 +84,7 @@ fun NewChatsComposable(navController: NavHostController, viewModel: NewChatViewM
                         Icon(
                             imageVector = Icons.Filled.Search,
                             contentDescription = "Search",
-                            tint = Color.White,
+                            tint = StrokeColor,
 
                             )
                     },
@@ -94,11 +100,17 @@ fun NewChatsComposable(navController: NavHostController, viewModel: NewChatViewM
                         fontSize = 14.sp
                     )
                 )
-                Button(onClick = {
+                Button(
+                    onClick = {
                     viewModel.setChats()
                     navController.navigate("routeMain")
-                }) {
-                    Text(text = "Start Chat")
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = BodyColor,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Start Chat", color = Color.White)
                 }
 
             }
